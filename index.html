@@ -1,37 +1,27 @@
+<!--faça com que quando no header a classe do criar tarefas estiver active mostre a div cadastrar e quando clicar em minhas tarefas a classe active vá para minhas tarefas e mostre a div id dados e oculte a div cadastrar-->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        /* Adicione estilos para a exibição das tarefas e o campo de edição */
-        .tarefa {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-
-        .edit-input {
-            all: unset;
-            color: #fefefe;
-            padding: 10px;
-            border: 1px solid #9e9e9e;
-            border-radius: 5px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
+        
     </style>
     <title>To do List - Micael Soares</title>
 </head>
 <body>
-    <header>
+    <header class="header">
+        <nav>
+            <ul>
+                <li><a id="criar" class="active"  onclick="criarTarefas();">Criar Tarefas</a></li>
+                <li><a class="mostar-tarefas" onclick="mostarTarefas();">Minhas Tarefas</a></li>
+            </ul>
+        </nav>
     </header>
-    <h1>Criar Tarefas</h1>
-    <br>
-    <div>
+    <div id="cadastrar" style="padding-left: 10px;">
+        <h2 style="margin-top: 20px; margin-left: 39px;">Criar Tarefas</h2>
+        <br>
         <div class="input-group">
             <input class="input" required type="text" id="titulo-tarefa">
             <label class="label" for="titulo-tarefa">Título</label>
@@ -40,31 +30,52 @@
             <input class="input" required type="text" id="descricao">
             <label class="label" for="descricao">Descrição</label>
         </div>
-        <button id="cadastrar" type="submit" onclick="cadastrar();">Cadastrar</button>
+        <button type="submit" onclick="cadastrar();">Cadastrar</button>
     </div>
 
-    <div id="dados"></div>
+    <div id="dados" hidden></div>
 
     <script>
+        function criarTarefas() {
+            const cadastrar = document.getElementById('cadastrar');
+            const dados = document.getElementById('dados');
+            cadastrar.style.display = 'block';
+            dados.style.display = 'none';
+
+            
+            const active = document.querySelector('.active');
+            active.classList.remove('active');
+            const mostrarTarefas = document.querySelector('#criar');
+            mostrarTarefas.classList.add('active');
+        }
+
+        function mostarTarefas() {
+            const cadastrar = document.getElementById('cadastrar');
+            const dados = document.getElementById('dados');
+            cadastrar.style.display = 'none';
+            dados.style.display = 'block';
+            
+            const active = document.querySelector('.active');
+            active.classList.remove('active');
+            const mostrarTarefas = document.querySelector('.mostar-tarefas');
+            mostrarTarefas.classList.add('active');
+        }
+
         document.addEventListener('DOMContentLoaded', carregarTarefas);
 
         function cadastrar() {
+            
             const titulo = document.getElementById('titulo-tarefa').value;
             const desc = document.getElementById('descricao').value;
 
-            // Recupera as tarefas já existentes do localStorage
             const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
-            // Adiciona a nova tarefa
             tarefas.push({ titulo, desc });
 
-            // Salva as tarefas no localStorage
             localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
-            // Atualiza a exibição das tarefas
             carregarTarefas();
 
-            // Limpa os campos de entrada
             document.getElementById('titulo-tarefa').value = '';
             document.getElementById('descricao').value = '';
         }
@@ -73,14 +84,13 @@
             const d = document.getElementById('dados');
             d.innerHTML = '';
 
-            // Recupera as tarefas do localStorage
             const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
             // Exibe cada tarefa na página
             tarefas.forEach((tarefa, index) => {
                 const div = document.createElement('div');
                 div.classList.add('tarefa');
-                div.innerHTML = `<h2>${tarefa.titulo}</h2><br>${tarefa.desc}<br>
+                div.innerHTML = `<h2>${tarefa.titulo}</h2>${tarefa.desc}<br>
                                 <button onclick="editarTarefa(${index});">Editar</button>
                                 <button onclick="excluirTarefa(${index});">Excluir</button>`;
 
@@ -89,7 +99,6 @@
         }
 
         function editarTarefa(index) {
-            // Recupera as tarefas do localStorage
             const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
             // Preenche os campos de entrada com os dados da tarefa selecionada
@@ -99,24 +108,18 @@
             // Remove a tarefa da lista
             tarefas.splice(index, 1);
 
-            // Salva as tarefas atualizadas no localStorage
             localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
-            // Atualiza a exibição das tarefas
             carregarTarefas();
         }
 
         function excluirTarefa(index) {
-            // Recupera as tarefas do localStorage
             const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
-            // Remove a tarefa da lista
             tarefas.splice(index, 1);
 
-            // Salva as tarefas atualizadas no localStorage
             localStorage.setItem('tarefas', JSON.stringify(tarefas));
-
-            // Atualiza a exibição das tarefas
+            
             carregarTarefas();
         }
     </script>
