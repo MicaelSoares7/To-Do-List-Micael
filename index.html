@@ -120,7 +120,6 @@
         }
 
         function editarTarefa(index) {
-            // Preenche os campos de edição com os dados da tarefa selecionada
             const tituloEditar = document.getElementById('titulo-tarefa-editar');
             const descricaoEditar = document.getElementById('descricao-editar');
 
@@ -130,7 +129,6 @@
             tituloEditar.value = tarefaSelecionada.titulo;
             descricaoEditar.value = tarefaSelecionada.desc;
 
-            // Armazena o índice da tarefa a ser editada como um atributo no botão "Salvar Edição"
             const botaoSalvarEdicao = document.querySelector('#editar-tarefa button[type="button"]');
             botaoSalvarEdicao.setAttribute('data-index', index);
 
@@ -152,7 +150,6 @@
 
             localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
-            // Chama a função para carregar e exibir as tarefas atualizadas
             carregarTarefas();
 
             // Volta para a área de exibição
