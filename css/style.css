@@ -105,13 +105,12 @@ nav .menu-btn i{
 }
 
 .tarefa.concluida {
-    /* Estilos para tarefas concluídas */
     text-decoration: line-through;
-    opacity: 0.6; /* Ajuste a opacidade conforme desejado */
+    opacity: 0.6;
 }
 
 
-/* */
+/* -- */
 
 .edit-input {
     all: unset;
@@ -179,26 +178,23 @@ button {
     cursor: pointer;
 }
 
-/* Estilo para o botão "Concluir" */
+/* Estilo para os botões */
 button.concluir {
-    background-color: #4CAF50; /* Verde */
-    color: #fff; /* Texto branco */
+    background-color: #4CAF50; 
+    color: #fff;
 }
 
-/* Estilo para o botão "Concluir" quando hover (mais escuro) */
 button.concluir:hover {
-    background-color: #45a049; /* Verde mais escuro */
+    background-color: #45a049;
 }
 
-/* Estilo para o botão "Excluir" */
 button.excluir {
-    background-color: #f44336; /* Vermelho */
-    color: #fff; /* Texto branco */
+    background-color: #f44336;
+    color: #fff;
 }
 
-/* Estilo para o botão "Excluir" quando hover (mais escuro) */
 button.excluir:hover {
-    background-color: #d32f2f; /* Vermelho mais escuro */
+    background-color: #d32f2f;
 }
 
 
