@@ -59,7 +59,7 @@ nav ul li a{
     font-size: 16px;
     font-weight: 500;
     padding: 8px 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     letter-spacing: 1px;
     transition: all 0.3s ease;
 }
@@ -87,6 +87,10 @@ nav .menu-btn i{
 }
 
 /* css minhas tarefas */
+#editar-tarefa{
+    margin-left: 10px;
+}
+
 .tarefa {
     background-color: #333;
     color: white;
@@ -99,6 +103,15 @@ nav .menu-btn i{
 .tarefa button{
     margin-top: 10px;
 }
+
+.tarefa.concluida {
+    /* Estilos para tarefas concluídas */
+    text-decoration: line-through;
+    opacity: 0.6; /* Ajuste a opacidade conforme desejado */
+}
+
+
+/* */
 
 .edit-input {
     all: unset;
@@ -165,6 +178,29 @@ button {
     color: white;
     cursor: pointer;
 }
+
+/* Estilo para o botão "Concluir" */
+button.concluir {
+    background-color: #4CAF50; /* Verde */
+    color: #fff; /* Texto branco */
+}
+
+/* Estilo para o botão "Concluir" quando hover (mais escuro) */
+button.concluir:hover {
+    background-color: #45a049; /* Verde mais escuro */
+}
+
+/* Estilo para o botão "Excluir" */
+button.excluir {
+    background-color: #f44336; /* Vermelho */
+    color: #fff; /* Texto branco */
+}
+
+/* Estilo para o botão "Excluir" quando hover (mais escuro) */
+button.excluir:hover {
+    background-color: #d32f2f; /* Vermelho mais escuro */
+}
+
 
 @media screen and (max-width: 600px) {
     nav ul{

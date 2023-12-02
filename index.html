@@ -30,7 +30,26 @@
         <button type="submit" onclick="cadastrar();">Cadastrar</button>
     </div>
 
-    <div id="dados" hidden></div>
+    <div id="dados" hidden>
+        <!-- Área de exibição das tarefas -->
+        <div id="exibir-tarefas"></div>
+    
+        <!-- Formulário de edição (inicialmente oculto) -->
+        <div id="editar-tarefa" style="display: none;">
+            <h2 style="margin-top: 20px; margin-left: 39px;">Editar Tarefa</h2>
+            <br>
+            <div class="input-group">
+                <input class="input" required type="text" id="titulo-tarefa-editar">
+                <label class="label" for="titulo-tarefa-editar">Título</label>
+            </div>
+            <div class="input-group">
+                <input class="input" required type="text" id="descricao-editar">
+                <label class="label" for="descricao-editar">Descrição</label>
+            </div>
+            <button type="button" onclick="salvarEdicao();">Salvar Edição</button>
+            <button type="button" onclick="cancelarEdicao();">Cancelar</button>
+        </div>
+    </div>
 
     <script>
         function criarTarefas() {
@@ -79,36 +98,77 @@
         }
 
         function carregarTarefas() {
-            const d = document.getElementById('dados');
+            const d = document.getElementById('exibir-tarefas');
             d.innerHTML = '';
 
             const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
-            // Exibe cada tarefa na página
             tarefas.forEach((tarefa, index) => {
                 const div = document.createElement('div');
                 div.classList.add('tarefa');
+
+                if (tarefa.concluida) {
+                    div.classList.add('concluida');
+                }
+
+                // Botões para visualizar e editar a tarefa
                 div.innerHTML = `<h2>${tarefa.titulo}</h2>${tarefa.desc}<br>
-                                <button onclick="editarTarefa(${index});">Editar</button>
-                                <button onclick="excluirTarefa(${index});">Excluir</button>`;
+                    <button class="editar" onclick="editarTarefa(${index});">Editar</button>
+                    <button class="excluir" onclick="excluirTarefa(${index});">Excluir</button>
+                    <button class="concluir" onclick="concluirTarefa(${index});">Concluir</button>`;
 
                 d.appendChild(div);
             });
         }
 
         function editarTarefa(index) {
+            // Preenche os campos de edição com os dados da tarefa selecionada
+            const tituloEditar = document.getElementById('titulo-tarefa-editar');
+            const descricaoEditar = document.getElementById('descricao-editar');
+
             const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+            const tarefaSelecionada = tarefas[index];
 
-            // Preenche os campos de entrada com os dados da tarefa selecionada
-            document.getElementById('titulo-tarefa').value = tarefas[index].titulo;
-            document.getElementById('descricao').value = tarefas[index].desc;
+            tituloEditar.value = tarefaSelecionada.titulo;
+            descricaoEditar.value = tarefaSelecionada.desc;
 
-            // Remove a tarefa da lista
-            tarefas.splice(index, 1);
+            // Armazena o índice da tarefa a ser editada como um atributo no botão "Salvar Edição"
+            const botaoSalvarEdicao = document.querySelector('#editar-tarefa button[type="button"]');
+            botaoSalvarEdicao.setAttribute('data-index', index);
+
+            // Esconde a área de exibição e mostra o formulário de edição
+            document.getElementById('exibir-tarefas').style.display = 'none';
+            document.getElementById('editar-tarefa').style.display = 'block';
+        }
+
+        function salvarEdicao() {
+            // Obtém o índice da tarefa a ser editada do atributo no botão "Salvar Edição"
+            const index = parseInt(document.querySelector('#editar-tarefa button[type="button"]').getAttribute('data-index'));
+
+            // Restante do código para salvar as alterações, já usando o índice corretamente
+            const tituloEditar = document.getElementById('titulo-tarefa-editar').value;
+            const descricaoEditar = document.getElementById('descricao-editar').value;
+
+            const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+            
+            // Aplica as alterações
+            tarefas[index].titulo = tituloEditar;
+            tarefas[index].desc = descricaoEditar;
 
             localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
+            // Chama a função para carregar e exibir as tarefas atualizadas
             carregarTarefas();
+
+            // Volta para a área de exibição
+            document.getElementById('exibir-tarefas').style.display = 'block';
+            document.getElementById('editar-tarefa').style.display = 'none';
+        }
+
+        function cancelarEdicao() {
+            // Cancela a edição e volta para a área de exibição
+            document.getElementById('exibir-tarefas').style.display = 'block';
+            document.getElementById('editar-tarefa').style.display = 'none';
         }
 
         function excluirTarefa(index) {
@@ -120,6 +180,22 @@
             
             carregarTarefas();
         }
+
+        function concluirTarefa(index) {
+            const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+
+            // Verifica se a tarefa já está concluída
+            if (tarefas[index].concluida) {
+                tarefas[index].concluida = false;
+            } else {
+                tarefas[index].concluida = true;
+            }
+
+            localStorage.setItem('tarefas', JSON.stringify(tarefas));
+
+            carregarTarefas();
+        }
+
     </script>
 </body>
 </html>
